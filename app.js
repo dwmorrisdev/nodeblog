@@ -10,7 +10,9 @@ var upload = multer({ dest: 'uploads/'});
 var moment = require('moment');
 var expressValidator = require('express-validator');
 
-var db = require(monk)('localhost/nodeblog');
+
+var mongo = require('mongodb');
+var db = require('monk')('localhost/nodeblog');
 
 
 var routes = require('./routes/index');
@@ -58,10 +60,10 @@ app.use(expressValidator({
 }));
 
 //connect-flash
-app.use(flash());
-app.use(function(req, res, next) {
-    res.locals.messages = require('express-messages')(req, res);
-    next();
+app.use(require('connect-flash')());
+app.use(function (req, res, next){
+  res.locals.messages = require('express-messages')(req, res)
+  next();
 });
 
 // make the db accesible to the router
